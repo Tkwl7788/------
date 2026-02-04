@@ -1,0 +1,6 @@
+{
+    "version": 2,
+    "buildCommand": "echo 'Building'",
+    "outputDirectory": "my-server/public",
+    "public": "my-server/public"
+}
