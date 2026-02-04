@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>키워드 생성기</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
+</head>
+
+<body>
+
+    <!-- 헤더/네비게이션 -->
+    <header class="header">
+        <div class="header-content">
+            <button class="menu-btn" id="menu-btn">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <div class="logo-section">
+                <a href="index.html" class="logo">🔑 키워드마스터</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- 사이드 메뉴 -->
+    <nav class="sidebar" id="sidebar">
+        <div class="sidebar-content">
+            <button class="close-btn" id="close-btn">✕</button>
+            <ul class="menu-list">
+                <li><a href="index.html">홈</a></li>
+                <li><a href="keyword-generator.html" class="active">키워드 생성기</a></li>
+                <li><a href="#pricing">가격</a></li>
+                <li><a href="#help">도움말</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- 오버레이 -->
+    <div class="overlay" id="overlay"></div>
+
+    <!-- 메인 콘텐츠 -->
+    <main class="main-content keyword-page">
+        <div class="container">
+            <h2>🚀 키워드 생성기</h2>
+
+            <div class="section">
+                <input type="file" id="excel-file" accept=".xlsx, .xls" />
+            </div>
+
+            <div class="section">
+                <div class="flex-group">
+                    <label>조합당 생성 개수:</label>
+                    <input type="number" id="gen-count" style="width: 70px;" value="1" min="1">
+                    <label>조합식:</label>
+                    <input type="text" id="col-order" class="input-order" placeholder="예: 12, 34">
+                    <button id="random-btn" class="btn-gen" disabled>조합 생성</button>
+                </div>
+            </div>
+
+            <div id="save-section" class="section" style="display: none; background-color: #f0fdf4;">
+                <div class="flex-group">
+                    <input type="text" id="sheet-name" placeholder="결과 시트 이름" style="width: 150px;">
+                    <button id="save-all-btn" class="btn-save-all">방식 1: A열 일렬 저장</button>
+                    <button id="save-split-btn" class="btn-save-split">방식 2: 조합별 구분 저장</button>
+                </div>
+            </div>
+
+            <div id="result-container">
+                <div style="padding: 20px; color: #999; text-align: center;">파일 로드 후 생성 버튼을 눌러주세요.</div>
+            </div>
+
+            <h4>데이터 미리보기</h4>
+            <div class="table-wrapper">
+                <table id="output-table">
+                    <thead id="table-header"></thead>
+                    <tbody id="table-body"></tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
+    <script src="script.js"></script>
+    <script src="keyword-generator.js"></script>
+
+</body>
+
+</html>
