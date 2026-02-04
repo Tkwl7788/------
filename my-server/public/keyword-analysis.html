@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>키워드 분석</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
+</head>
+
+<body>
+
+    <!-- 헤더/네비게이션 -->
+    <header class="header">
+        <div class="header-content">
+            <button class="menu-btn" id="menu-btn">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <div class="logo-section">
+                <a href="index.html" class="logo">🔑 키워드마스터</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- 사이드 메뉴 -->
+    <nav class="sidebar" id="sidebar">
+        <div class="sidebar-content">
+            <button class="close-btn" id="close-btn">✕</button>
+            <ul class="menu-list">
+                <li><a href="index.html">홈</a></li>
+                <li><a href="keyword-generator.html">키워드 생성기</a></li>
+                <li><a href="keyword-analysis.html" class="active">키워드 분석</a></li>
+                <li><a href="#pricing">가격</a></li>
+                <li><a href="#help">도움말</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- 오버레이 -->
+    <div class="overlay" id="overlay"></div>
+
+    <!-- 메인 콘텐츠 -->
+    <main class="main-content keyword-analysis-page">
+        <div class="container">
+            <h2>🔍 키워드 분석</h2>
+
+            <!-- 플랫폼 탭 -->
+            <div class="platform-tabs">
+                <button class="tab-btn active" data-platform="naver">
+                    <span class="platform-icon">🇰🇷</span> Naver
+                </button>
+                <button class="tab-btn" data-platform="google">
+                    <span class="platform-icon">🌐</span> Google
+                </button>
+            </div>
+
+            <!-- 검색 섹션 -->
+            <div class="section search-section">
+                <div class="flex-group">
+                    <input type="text" id="keyword-input" placeholder="분석할 키워드를 입력하세요" class="keyword-input">
+                    <button id="search-btn" class="btn-search">분석하기</button>
+                </div>
+            </div>
+
+            <!-- 결과 섹션 -->
+            <div id="results-container" style="display: none;">
+                <!-- 기본 정보 -->
+                <div class="section result-summary">
+                    <h3 id="result-keyword">키워드</h3>
+                    <div class="summary-grid">
+                        <div class="summary-item">
+                            <span class="label">월간 검색량</span>
+                            <span class="value" id="search-volume">-</span>
+                        </div>
+                        <div class="summary-item">
+                            <span class="label">경쟁도</span>
+                            <span class="value" id="competition">-</span>
+                        </div>
+                        <div class="summary-item">
+                            <span class="label">추천도</span>
+                            <span class="value" id="recommendation">-</span>
+                        </div>
+                        <div class="summary-item">
+                            <span class="label">트렌드</span>
+                            <span class="value" id="trend">-</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 상세 분석 -->
+                <div class="section analysis-section">
+                    <h3>상세 분석</h3>
+                    <div class="chart-placeholder" id="chart-container">
+                        <p>차트 영역</p>
+                    </div>
+                </div>
+
+                <!-- 연관 키워드 -->
+                <div class="section related-keywords-section">
+                    <h3>연관 키워드 (자동 확장)</h3>
+                    <div id="related-keywords-container" class="keywords-grid">
+                        <p style="color: #999;">로딩 중...</p>
+                    </div>
+                </div>
+
+                <!-- 상위 검색 결과 -->
+                <div class="section top-results-section">
+                    <h3>상위 검색 결과</h3>
+                    <div id="top-results-container" class="results-list">
+                        <p style="color: #999;">로딩 중...</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 대량 분석 섹션 -->
+            <div class="section bulk-section">
+                <h3>📊 대량 키워드 분석</h3>
+                <div class="flex-group">
+                    <input type="file" id="bulk-excel" accept=".xlsx, .xls" placeholder="Excel 파일 선택" />
+                    <button id="bulk-btn" class="btn-analysis">일괄 분석</button>
+                </div>
+                <div id="bulk-results" style="margin-top: 20px; display: none;">
+                    <h4>분석 결과</h4>
+                    <div class="table-wrapper">
+                        <table id="bulk-table">
+                            <thead>
+                                <tr>
+                                    <th>키워드</th>
+                                    <th>검색량</th>
+                                    <th>경쟁도</th>
+                                    <th>추천도</th>
+                                </tr>
+                            </thead>
+                            <tbody id="bulk-tbody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 저장 버튼 -->
+            <div class="section" style="display: none;" id="save-section">
+                <div class="flex-group">
+                    <button id="export-btn" class="btn-save-all">결과 Excel로 저장</button>
+                    <button id="print-btn" class="btn-save-split">인쇄</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="script.js"></script>
+    <script src="keyword-analysis.js"></script>
+
+</body>
+
+</html>
