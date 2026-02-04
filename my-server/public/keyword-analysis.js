@@ -73,18 +73,31 @@ function displayResults(keyword, data) {
     // 기본 정보 업데이트
     document.getElementById('result-keyword').textContent = keyword;
     document.getElementById('search-volume').textContent =
-        data.searchVolume ? `${data.searchVolume.toLocaleString()}` : '-';
-    document.getElementById('competition').textContent =
-        `${data.competition || 0}%`;
-    document.getElementById('recommendation').textContent =
-        `${data.recommendation || 0}/10`;
-    document.getElementById('trend').textContent =
-        data.trend ? `↑ ${data.trend}%` : '-';
+        data.searchVolume ? `${Math.round(data.searchVolume).toLocaleString()}` : '-';
+    document.getElementById('competition').textContent = 
+        `${Math.round(data.competition || 0)}%`;
+    document.getElementById('recommendation').textContent = 
+        `${Math.round(data.recommendation || 0)}/10`;
+    document.getElementById('trend').textContent = 
+        data.trend ? `${data.trend > 0 ? '↑' : '↓'} ${Math.abs(data.trend)}%` : '-';
+
+    // 실제 데이터 표시 여부
+    if (data.isMockData || data.usesMockData) {
+        const warningMsg = document.createElement('div');
+        warningMsg.style.cssText = 'background: #fff3cd; color: #856404; padding: 10px; border-radius: 4px; margin-bottom: 10px;';
+        warningMsg.textContent = '⚠️ 모의 데이터를 표시하고 있습니다. Naver API 키를 설정하면 실제 데이터를 볼 수 있습니다.';
+        document.getElementById('results-container').insertBefore(warningMsg, document.getElementById('results-container').firstChild);
+    }
+
+    // 월간 데이터 차트 (있으면)
+    if (data.monthlyData && data.monthlyData.length > 0) {
+        displayMonthlyChart(data.monthlyData);
+    }
 
     // 연관 키워드 표시
     if (data.relatedKeywords && data.relatedKeywords.length) {
         const container = document.getElementById('related-keywords-container');
-        container.innerHTML = data.relatedKeywords.map(kw =>
+        container.innerHTML = data.relatedKeywords.map(kw => 
             `<div class="keyword-tag" onclick="document.getElementById('keyword-input').value='${kw}'; document.getElementById('search-btn').click();">${kw}</div>`
         ).join('');
     }
@@ -109,9 +122,29 @@ function displayResults(keyword, data) {
     document.getElementById('save-section').style.display = 'block';
 }
 
-// 대량 분석
-document.getElementById('bulk-btn').addEventListener('click', async () => {
-    const file = document.getElementById('bulk-excel').files[0];
+// 월간 데이터 차트 표시
+function displayMonthlyChart(monthlyData) {
+    const chartContainer = document.getElementById('chart-container');
+    if (!monthlyData || monthlyData.length === 0) return;
+
+    const maxRatio = Math.max(...monthlyData.map(d => d.ratio));
+    const chartHTML = monthlyData.map(item => {
+        const height = (item.ratio / maxRatio) * 200;
+        const date = new Date(item.period);
+        const label = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
+        return `
+            <div style="display: inline-block; width: 30px; margin: 5px; text-align: center;">
+                <div style="background: #007bff; height: ${height}px; border-radius: 4px; margin-bottom: 5px;"></div>
+                <small style="font-size: 10px;">${label}</small>
+            </div>
+        `;
+    }).join('');
+
+    chartContainer.innerHTML = `
+        <div style="display: flex; align-items: flex-end; justify-content: center; height: 250px;">
+            ${chartHTML}
+        </div>
+    `;
     if (!file) {
         alert('Excel 파일을 선택하세요.');
         return;
@@ -167,9 +200,9 @@ function displayBulkResults(results) {
     tbody.innerHTML = results.map(r => `
         <tr>
             <td>${r.keyword}</td>
-            <td>${r.searchVolume.toLocaleString()}</td>
-            <td>${r.competition}%</td>
-            <td>${r.recommendation}/10</td>
+            <td>${Math.round(r.searchVolume || 0).toLocaleString()}</td>
+            <td>${Math.round(r.competition || 0)}%</td>
+            <td>${Math.round(r.recommendation || 0)}/10</td>
         </tr>
     `).join('');
 
